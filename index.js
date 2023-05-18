@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 require("dotenv").config();
 const app = express();
 const port = process.env.PORT || 5000;
@@ -30,6 +30,17 @@ async function run() {
     const toysCollection = client.db("heroDungeon").collection("allToys");
 
     //add toys
+
+    app.get("/allToys", async (req, res) => {
+      console.log(req.query.email);
+      let query = {};
+      if (req.query?.email) {
+        query = { sellerEmail: req.query.email };
+      }
+      const result = await toysCollection.find(query).toArray();
+      res.send(result);
+    });
+
     app.post("/allToys", async (req, res) => {
       const toy = req.body;
       console.log(toy);
