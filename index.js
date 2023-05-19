@@ -32,12 +32,6 @@ async function run() {
     //add toys
 
     app.get("/allToys", async (req, res) => {
-      const cursor = toysCollection.find();
-      const result = await cursor.toArray();
-      res.send(result);
-    });
-
-    app.get("/allToys", async (req, res) => {
       console.log(req.query.email);
       let query = {};
       if (req.query?.email) {
@@ -51,6 +45,13 @@ async function run() {
       const toy = req.body;
       console.log(toy);
       const result = await toysCollection.insertOne(toy);
+      res.send(result);
+    });
+
+    app.delete("/allToys/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await toysCollection.deleteOne(query);
       res.send(result);
     });
 
