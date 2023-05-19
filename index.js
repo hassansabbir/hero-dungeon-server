@@ -28,6 +28,9 @@ async function run() {
     await client.connect();
 
     const toysCollection = client.db("heroDungeon").collection("allToys");
+    const popularCollection = client
+      .db("heroDungeon")
+      .collection("popularToys");
 
     //add toys
 
@@ -76,6 +79,13 @@ async function run() {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
       const result = await toysCollection.deleteOne(query);
+      res.send(result);
+    });
+
+    //popular toys
+    app.get("/popularToys", async (req, res) => {
+      const cursor = popularCollection.find();
+      const result = await cursor.toArray();
       res.send(result);
     });
 
