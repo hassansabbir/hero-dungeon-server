@@ -36,11 +36,16 @@ async function run() {
 
     app.get("/allToys", async (req, res) => {
       console.log(req.query.email);
+
       let query = {};
       if (req.query?.email) {
         query = { sellerEmail: req.query.email };
       }
-      const result = await toysCollection.find(query).toArray();
+      const result = await toysCollection
+        .find(query)
+        .sort({ price: req.query.sort === "true" ? 1 : -1 })
+        .toArray();
+
       res.send(result);
     });
 
