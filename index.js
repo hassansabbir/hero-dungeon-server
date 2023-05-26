@@ -36,7 +36,6 @@ async function run() {
 
     app.get("/allToys", async (req, res) => {
       console.log(req.query.email);
-
       let query = {};
       if (req.query?.email) {
         query = { sellerEmail: req.query.email };
